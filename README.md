@@ -3,86 +3,70 @@
 
 * Easy Extensibility (Open/Closed Principle)
 
-    (check)
-    - Extend the system without touching any pre-existing code:
+    * Extend the system without touching any pre-existing code: (check)
 
-        (check)
-        + add plugin UIs to menus using system registration functions
+        * add plugin UIs to menus using system registration functions (check)
 
-        (check)
-        + modules can request your plugin's operation without
+        * modules can request your plugin's operation without
           needing to explicitly import your plugin. The system will find and
-          dynamically load the appropriate driver when needed.
+          dynamically load the appropriate driver when needed. (check)
 
-        (check)
-        + Avoid loading excessive code
-            # The system will find and dynamically load the appropriate driver when
+        * Avoid loading excessive code (check)
+
+            * The system will find and dynamically load the appropriate driver when
               needed, minimizing the effect that syntax or initialization
               errors will have on parts of the system that don't need the
               code. This is in contrast to functions_live, where a great many
               functions are defined and initialized even for requests that do
               not use them.
 
-        (check)
-        + you can write your module with minimal knowledge of the system's
+        * you can write your module with minimal knowledge of the system's
           inner workings. This means new developers can become productive very
-          quickly.
+          quickly. (check)
 
-    (check)
-    - all your code is in one place
+    * all your code is in one place (check)
 
-        (check)
-        + plugins are self-contained projects that can be made and tested
+        * plugins are self-contained projects that can be made and tested
           in a local environment, without needing to run on the target
-          system.
+          system. (check)
 
-    (check)
-    - Since your module is its own project, you can manage and organize the
-      code however you see fit:
-        (check)
-        + Track your module in its own version control repository.
-        (check)
-        + Create a deployment process unique to that project.
-        (check)
-        + Modules can choose to ship with their own library dependencies,
-          avoiding version conflicts.
+    * Since your module is its own project, you can manage and organize the
+      code however you see fit: (check)
+        * Track your module in its own version control repository. (check)
+        * Create a deployment process unique to that project. (check)
+        * Modules can choose to ship with their own library dependencies,
+          avoiding version conflicts. (check)
 
 * Fault tolerance
 
-    - fallback if multiple drivers fulfill the same responsibility
+    * fallback if multiple drivers fulfill the same responsibility
 
-        (check)
-        + the first to register for "Logging" becomes the default logger, but a
+        * the first to register for "Logging" becomes the default logger, but a
           fallback logger can be registered with lower priority. A warning
-          will be kept for troubleshooting support.
+          will be kept for troubleshooting support. (check)
 
-        + failure to find an appropriate provider will result in an error hook
+        * failure to find an appropriate provider will result in an error hook
           being dispatched, which can then be handled by another plugin.
 
-    (check)
-    - safe mode and recovery mode
+    * safe mode and recovery mode (check)
 
-        (check)
-        + if a module breaks the system to the point where you can't even
+        * if a module breaks the system to the point where you can't even
           disable it from the UI, you can get in through a recovery mode, which
           employs a minimal runtime that allows you to disable plugins, change
-          their settings, or revert their configurations to a restore point.
+          their settings, or revert their configurations to a restore point. (check)
 
-    (check)
-    - if something is not enabled, events will safely dispatch and continue
+    * if something is not enabled, events will safely dispatch and continue (check)
 
-        (check)
-        + Dispatch events / hooks are the safest way to hook into plugin
+        * Dispatch events / hooks are the safest way to hook into plugin
           functionality, and any system can hook into any other system,
-          further separating concerns.
+          further separating concerns. (check)
 
-(check)
-* Easy debugging
-    (check)
-    - enable or disable plugins for troubleshooting
-    (check)
-    - loggable plugin events
+* Easy debugging (check)
+    * enable or disable plugins for troubleshooting (check)
+    * loggable plugin events (check)
 
+
+================================================
 
 Open/Closed Principle: "Open for extension, closed for modification"
 A software platform should not need its code to be altered in any kind of way in order to extend its functionality.
