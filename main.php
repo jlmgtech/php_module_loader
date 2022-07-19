@@ -15,5 +15,5 @@ $user_mode = [
 ];
 
 $mode = $safe_mode;
-$loader = new ModuleLoader(__DIR__, $mode);
+$loader = new ModuleLoader($mode);
 Core::render($loader);

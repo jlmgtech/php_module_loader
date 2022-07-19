@@ -5,14 +5,47 @@ class ExampleCore {
     public static function onload() { }
 
     public function render($loader) {
-        $modconf = $loader->get_modconf();
+        $modconf = $loader->modconf;
         $output = "";
-        // load every module and tell it to spit out its app icon
-        foreach ($modconf as $module => $drivers) {
-            $driver = $loader->load_module($module);
-            $output .= sprintf("%s as %s\n", $module, $driver);
+
+        printf("AVAILABLE MODULES:\n");
+        foreach ($loader->get_all_modules() as $module) {
+            printf("%s\n", $module);
+            printf("\tAVAILABLE DRIVERS:\n");
+            foreach ($loader->get_all_drivers_for_module($module) as $driver) {
+                printf("\t\t%s\n", $driver);
+            }
         }
-        printf("================\n%s\n", $output);
+        printf("\n");
+
+        printf("ENABLED MODULES:\n");
+        foreach ($loader->get_enabled_modules() as $module) {
+            printf("%s\n", $module);
+            printf("\tSELECTED DRIVERS:\n");
+            foreach ($loader->modconf[$module] as $driver) {
+                printf("\t\t%s\n", $driver);
+            }
+            printf("\n");
+
+            printf("\tAVAILABLE DRIVERS:\n");
+            foreach ($loader->get_all_drivers_for_module($module) as $driver) {
+                printf("\t\t%s\n", $driver);
+            }
+            printf("\n");
+        }
+        printf("\n");
+
+        printf("DISABLED MODULES:\n");
+        foreach($loader->get_disabled_modules() as $module) {
+            printf("%s\n", $module);
+            printf("\tAVAILABLE DRIVERS:\n");
+            foreach ($loader->get_all_drivers_for_module($module) as $driver) {
+                printf("\t\t%s\n", $driver);
+            }
+            printf("\n");
+        }
+        printf("\n");
     }
+
 };
 
