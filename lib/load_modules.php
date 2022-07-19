@@ -37,7 +37,9 @@ function get_dirs($dir) {
 }
 
 function module_log($msg) {
-    printf("\tLOG -> %s\n", $msg);
+    if (strncmp($msg, "FAIL:", 5) === 0) {
+        printf("(%s)\n", $msg);
+    }
 }
 
 
@@ -69,6 +71,9 @@ class ModuleLoader {
     }
 
     public function get_all_modules(): array {
+        static $output = NULL;
+        if ($output !== NULL) return $output;
+
         $output = [];
         $module_dirs = get_dirs(__DIR__ . "/../modules");
         foreach ($module_dirs as $module) {
@@ -77,6 +82,9 @@ class ModuleLoader {
         return $output;
     }
     public function get_enabled_modules(): array {
+        static $output = NULL;
+        if ($output !== NULL) return $output;
+
         $output = [];
         foreach ($this->modconf as $module => $drivers) {
             $output[] = $module;
@@ -84,6 +92,9 @@ class ModuleLoader {
         return $output;
     }
     public function get_disabled_modules(): array {
+        static $output = NULL;
+        if ($output !== NULL) return $output;
+
         $output = [];
         $all_modules = $this->get_all_modules();
         foreach ($all_modules as $module) {
@@ -95,6 +106,9 @@ class ModuleLoader {
     }
 
     public function get_all_drivers_for_module(string $module): array {
+        static $output = NULL;
+        if ($output !== NULL) return $output;
+
         // show all subdirectories in the module directory
         $output = [];
         $module_dir = get_module_dir($module);
@@ -110,9 +124,11 @@ class ModuleLoader {
 
     private function add_module_actions() {
         foreach ($this->drivers as $module => $driver) {
-            $action_file = get_action_file($module, $driver);
-            if ($action_file) {
-                include_once($action_file);
+            if ($driver) {
+                $action_file = get_action_file($module, $driver);
+                if ($action_file) {
+                    include_once($action_file);
+                }
             }
         }
     }
@@ -121,6 +137,9 @@ class ModuleLoader {
         $this->drivers = [];
         foreach ($this->modconf as $module => $drivers) {
             $this->drivers[$module] = $this->resolve_driver($module, $drivers);
+            if ($this->drivers[$module] === NULL) {
+                module_log("FAIL: Could not resolve driver for module $module");
+            }
         }
     }
     private function resolve_driver(string $module, array $drivers) {
@@ -136,7 +155,12 @@ class ModuleLoader {
         return NULL;
     }
 
-    public function load_module($module): string {
+    public function load_module($module) {
+
+        if (!in_array($module, $this->get_enabled_modules())) {
+            return NULL;
+        }
+
         module_log("looking for module '$module'\n");
         if (class_exists($module)) {
             module_log("INFO: module '$module' already loaded\n");

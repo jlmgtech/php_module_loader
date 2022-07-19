@@ -4,7 +4,7 @@ require_once __DIR__ . "/" . "lib/load_modules.php";
 
 $safe_mode = [
     "Core" => ["ExampleCore"],
-    "Billing" => ["ExampleBilling"],
+    "Billing" => ["Flubo"],
     "Logging" => ["BasicLogger"],
 ];
 
