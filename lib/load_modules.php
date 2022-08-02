@@ -23,7 +23,6 @@ function get_driver_file(string $module, string $driver) {
 function get_action_file(string $module, string $driver) {
     // if you want, you can memoize this function
     $action_file = sprintf("%s/actions.php", get_driver_dir($module, $driver));
-    module_log("get_action_file '$action_file'");
     return is_file($action_file) ? $action_file : NULL;
 }
 
@@ -127,7 +126,6 @@ class ModuleLoader {
             if ($driver) {
                 $action_file = get_action_file($module, $driver);
                 if ($action_file) {
-                    module_log("running actions for $module/$driver");
                     include_once($action_file);
                 }
             }
@@ -147,10 +145,8 @@ class ModuleLoader {
     }
     private function resolve_driver(string $module, array $drivers) {
         foreach ($drivers as $driver) {
-            module_log("DEBUG: resolving driver $driver for module $module");
             $driver_file = get_driver_file($module, $driver);
             if ($driver_file) {
-                module_log("INFO: found driver $driver for module $module: $driver_file");
                 return $driver;
             }
         }
@@ -164,7 +160,6 @@ class ModuleLoader {
             return NULL;
         }
 
-        module_log("looking for module '$module'\n");
         if (class_exists($module)) {
             module_log("INFO: module '$module' already loaded\n");
             return $module;
