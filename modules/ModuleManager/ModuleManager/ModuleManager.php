@@ -19,7 +19,7 @@ class ModuleManager {
         $output = "";
 
         // dispatch registration hook
-        do_action("register_menu", ["ExampleCore", "add_menu_entry"]);
+        do_action("register_menu", [get_class(), "add_menu_entry"]);
 
         // render menu
         $output .= "<ul>\n";
