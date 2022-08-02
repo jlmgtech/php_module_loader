@@ -4,13 +4,13 @@ require_once __DIR__ . "/" . "hook_functions.php";
 define("MODULES_DIR", __DIR__ . "/../modules");
 
 function get_module_dir(string $module) {
-    $module_dir = sprintf("%s/%s/", MODULES_DIR, $module);
+    $module_dir = sprintf("%s/%s", MODULES_DIR, $module);
     return is_dir($module_dir) ? $module_dir : NULL;
 }
 
 function get_driver_dir(string $module, string $driver) {
     // if you want, you can memoize this function
-    $driver_dir = sprintf("%s/%s/%s/", MODULES_DIR, $module, $driver);
+    $driver_dir = sprintf("%s/%s/%s", MODULES_DIR, $module, $driver);
     return is_dir($driver_dir) ? $driver_dir : NULL;
 }
 
@@ -23,6 +23,7 @@ function get_driver_file(string $module, string $driver) {
 function get_action_file(string $module, string $driver) {
     // if you want, you can memoize this function
     $action_file = sprintf("%s/actions.php", get_driver_dir($module, $driver));
+    module_log("get_action_file '$action_file'");
     return is_file($action_file) ? $action_file : NULL;
 }
 
@@ -37,9 +38,9 @@ function get_dirs($dir) {
 }
 
 function module_log($msg) {
-    if (strncmp($msg, "FAIL:", 5) === 0) {
+    //if (strncmp($msg, "FAIL:", 5) === 0) {
         printf("(%s)\n", $msg);
-    }
+    //}
 }
 
 
@@ -127,6 +128,7 @@ class ModuleLoader {
             if ($driver) {
                 $action_file = get_action_file($module, $driver);
                 if ($action_file) {
+                    module_log("running actions for $module/$driver");
                     include_once($action_file);
                 }
             }
@@ -136,6 +138,8 @@ class ModuleLoader {
     private function resolve_drivers() {
         $this->drivers = [];
         foreach ($this->modconf as $module => $drivers) {
+            if (is_string($drivers))
+                $drivers = [$drivers];
             $this->drivers[$module] = $this->resolve_driver($module, $drivers);
             if ($this->drivers[$module] === NULL) {
                 module_log("FAIL: Could not resolve driver for module $module");
@@ -186,7 +190,9 @@ class ModuleLoader {
             return NULL;
         }
 
-        class_alias($driver, $module);
+        if ($module !== $driver) {
+            class_alias($driver, $module);
+        }
         if (method_exists($module, "onload"))
             $module::onload();
 
