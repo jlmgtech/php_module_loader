@@ -29,7 +29,7 @@ class Router {
         // echo the current url path
         $path = $_SERVER["REQUEST_URI"];
         $method = $_SERVER["REQUEST_METHOD"];
-        $callback = self::$routes[$method][$path];
+        $callback = self::$routes[$method][$path] ?? NULL;
         if ($callback) {
             $output = $callback();
             echo $output;
