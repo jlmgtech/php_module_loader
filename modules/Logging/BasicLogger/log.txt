@@ -1,5 +1,5 @@
-2022-08-02 11:06:13::TEST::testing
-2022-08-02 11:06:24::LOG::Example Core init
-2022-08-02 11:06:26::LOG::Example Core init
-2022-08-02 11:06:29::LOG::Example Core init
-2022-08-02 11:12:55::LOG::Example Core init
+2022-08-02 11:06:13::INFO::testing
+2022-08-02 11:06:24::LOG ::Example Core init
+2022-08-02 11:06:26::LOG ::Example Core init
+2022-08-02 11:06:29::LOG ::Example Core init
+2022-08-02 11:12:55::LOG ::Example Core init

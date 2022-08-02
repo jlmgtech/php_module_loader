@@ -14,7 +14,7 @@ class BasicLogger {
     }
 
     public static function log($msg) {
-        self::write("LOG", $msg);
+        self::write("LOG ", $msg);
     }
 
     public static function info($msg) {
@@ -37,7 +37,7 @@ class BasicLogger {
             if (trim($line) == "") {
                 continue;
             }
-            $line = explode(" ", $line);
+            $line = explode("::", $line);
             $date = array_shift($line);
             $lvl = array_shift($line);
             $msg = implode(" ", $line);

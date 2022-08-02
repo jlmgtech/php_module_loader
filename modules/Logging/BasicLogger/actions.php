@@ -15,12 +15,11 @@ add_action("register_routes", function(callable $get, callable $route) {
         $logs = array_reverse($logs);
         $logs = array_slice($logs, 0, 100);
         $logs = array_map(function($log) {
-            $log["time"] = date("Y-m-d H:i:s", $log["time"]);
             return $log;
         }, $logs);
         foreach ($logs as $log) {
             $output .= "
-                <div>{$log["time"]} - {$log["level"]} : {$log["message"]}</div>
+                <pre>{$log["time"]} - {$log["level"]} : {$log["message"]}</pre>
             ";
         }
         return $output;

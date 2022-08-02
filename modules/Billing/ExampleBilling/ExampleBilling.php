@@ -38,7 +38,7 @@ class ExampleBilling {
         }
     }
 
-    public function next_bill_date() {
+    public static function next_bill_date() {
         // curl examplebilling.net to get the next bill date
         // return the date in the format YYYY-MM-DD
         // if the date is in the past, return an empty string
@@ -60,7 +60,7 @@ class ExampleBilling {
         }
     }
 
-    public function add_tag(string $cid, string $tid): string {
+    public static function add_tag(string $cid, string $tid): string {
         $url = "https://examplebilling.net/api/add_tag";
         $data = [
             "cid" => $cid,
@@ -69,7 +69,7 @@ class ExampleBilling {
         return self::post($url, $data);
     }
 
-    public function get_config_html() {
+    public static function get_config_html() {
         // return an html string to be displayed in the admin area
         return "
             <div>
