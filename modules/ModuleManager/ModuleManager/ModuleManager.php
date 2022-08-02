@@ -1,6 +1,6 @@
 <?php
 
-class ExampleCore {
+class ModuleManager {
 
     private static $menu = [];
 
