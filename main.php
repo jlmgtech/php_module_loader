@@ -37,5 +37,5 @@ do_action("init");
 
 $code = Router::render();
 $html = file_get_contents(__DIR__ . "/" . "index.tpl");
-$html = str_replace("[code]", $code, $html);
+$html = str_replace("[code]", $code ?? "", $html);
 echo $html;
