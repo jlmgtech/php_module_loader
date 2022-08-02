@@ -4,7 +4,6 @@ class ExampleCore {
 
     private static $menu = [];
 
-    public static function onload() {}
     public static function add_menu_entry(string $name, string $url, string $icon) {
         self::$menu[$name] = [
             "url" => $url,

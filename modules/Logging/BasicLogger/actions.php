@@ -20,7 +20,7 @@ add_action("register_routes", function(callable $get, callable $route) {
         }, $logs);
         foreach ($logs as $log) {
             $output .= "
-                <div>{$log["time"]} - {$log["level"]} : {$log["msg"]}</div>
+                <div>{$log["time"]} - {$log["level"]} : {$log["message"]}</div>
             ";
         }
         return $output;
