@@ -14,20 +14,33 @@ class ModuleManager {
         ];
     }
 
-    public static function render($loader) {
-        $modconf = $loader->modconf;
+    public static function render() {
         $output = "";
-
         // dispatch registration hook
         do_action("register_menu", [get_class(), "add_menu_entry"]);
 
         // render menu
         $output .= "<ul>\n";
         foreach (self::$menu as $name => $entry) {
-            $output .= "<li><a href='{$entry["url"]}'><i class='fa fa-{$entry["icon"]}'></i> {$name}</a></li>\n";
+            $output .= "
+                <li>
+                    <a href='{$entry["url"]}'>
+                        <div>{$name}</div>
+                        <br />
+                        <div><i class='fa fa-{$entry["icon"]}'></i></div>
+                    </a>
+                </li>\n
+            ";
         }
         $output .= "</ul>\n";
-        return $output;
+        return "
+            <style>a[href] {text-decoration:none;text-align:center;} ul{list-style:none;display:flex;} li{background: #cccccc; padding: 1em; width: 30%;margin:1em;}</style>
+            <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css' />
+            <div style='width:50%;margin:auto;font-family:sans-serif;'>
+                <h1>Modules</h1>
+                <div>$output</div>
+            </div>
+        ";
     }
 
 };

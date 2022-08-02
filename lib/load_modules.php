@@ -38,9 +38,8 @@ function get_dirs($dir) {
 }
 
 function module_log($msg) {
-    //if (strncmp($msg, "FAIL:", 5) === 0) {
-        printf("(%s)\n", $msg);
-    //}
+    $stderr = fopen("php://stderr", "w");
+    fprintf($stderr, "%s\n", $msg);
 }
 
 

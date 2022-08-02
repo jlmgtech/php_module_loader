@@ -16,6 +16,7 @@ require_once __DIR__ . "/" . "lib/load_modules.php";
 require_once __DIR__ . "/" . "lib/hook_functions.php";
 
 $safe_mode = [
+    "Router" => "Router",
     "Core" => "ExampleCore",
     "ModuleManager" => "ModuleManager",
     "Billing" => "Flubo",
@@ -23,6 +24,7 @@ $safe_mode = [
 ];
 
 $user_mode = [
+    "Router" => "Router",
     "Core" => "ExampleCore",
     "ModuleManager" => "ModuleManager",
     "Billing" => "Infusionsoft",
@@ -33,7 +35,7 @@ $mode = $user_mode;
 $loader = new ModuleLoader($mode);
 do_action("init");
 
-$code = ModuleManager::render($loader);
+$code = Router::render();
 $html = file_get_contents(__DIR__ . "/" . "index.tpl");
 $html = str_replace("[code]", $code, $html);
 echo $html;
