@@ -22,14 +22,10 @@ class ModuleManager {
         // render menu
         $output .= "<ul>\n";
         foreach (self::$menu as $name => $entry) {
-            $green = rand()%100;
-            $red = $green + rand()%100;
-            $blue = rand()%100;
-
-            $random_color = sprintf("rgb(%d, %d, %d)", $red, $green, rand()%200);
+            $random_color = sprintf("rgb(%d, %d, %d)", 100+rand()%100, 100+rand()%100, 50+rand()%200);
             $output .= "
                 <li style='background:$random_color'>
-                    <a href='{$entry["url"]}' style='color:#fff'>
+                    <a href='{$entry["url"]}'>
                         <div>{$name}</div>
                         <br />
                         <div><i class='fa fa-{$entry["icon"]}'></i></div>
@@ -39,7 +35,7 @@ class ModuleManager {
         }
         $output .= "</ul>\n";
         return "
-            <style>body{background:#111;color:#fff}a[href] {text-decoration:none;text-align:center;} ul{list-style:none} li{padding:1em;margin:1em;min-width:30%;display:inline-block;}</style>
+            <style>a[href] {text-decoration:none;text-align:center;} ul{list-style:none} li{padding:1em;margin:1em;min-width:30%;display:inline-block;}</style>
             <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css' />
             <div style='width:50%;margin:auto;font-family:sans-serif;'>
                 <h1>Modules</h1>

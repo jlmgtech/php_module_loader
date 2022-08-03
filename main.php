@@ -16,18 +16,18 @@ require_once __DIR__ . "/" . "lib/load_modules.php";
 require_once __DIR__ . "/" . "lib/hook_functions.php";
 
 $safe_mode = [
+    "Auth" => "SessionAuth",
     "Router" => "Router",
     "Core" => "ExampleCore",
     "ModuleManager" => "ModuleManager",
-    "Billing" => "Flubo",
     "Logging" => "BasicLogger",
 ];
 
 $user_mode = [
+    "Auth" => "SessionAuth",
     "Router" => "Router",
     "Core" => "ExampleCore",
     "ModuleManager" => "ModuleManager",
-    "Billing" => "Infusionsoft",
     "Logging" => "BasicLogger", 
 ];
 

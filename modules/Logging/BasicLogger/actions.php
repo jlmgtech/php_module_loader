@@ -9,7 +9,7 @@ add_action("register_menu", function(callable $add_to_menu) {
 });
 
 add_action("register_routes", function(callable $get, callable $route) {
-    $get("/cp/basic-logger/", function() {
+    $get("/cp/basic-logger/", Auth::login_wrap(function() {
         $output = "";
         $logs = Logging::get_logs();
         $logs = array_reverse($logs);
@@ -23,5 +23,5 @@ add_action("register_routes", function(callable $get, callable $route) {
             ";
         }
         return $output;
-    });
+    }));
 });
