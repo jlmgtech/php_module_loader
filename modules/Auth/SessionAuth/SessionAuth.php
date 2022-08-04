@@ -26,18 +26,16 @@ class SessionAuth {
         return false;
     }
 
-    public static function login_wrap(callable $render): callable {
-        return function() use ($render) {
-            if (self::is_logged_in()) {
-                return $render();
-            } else {
-                return self::render_login();
-            }
-        };
+    public static function login_guard() {
+        if (!self::is_logged_in()) {
+            echo self::render_login();
+            return false;
+        }
     }
 
     public static function render_login(): string {
         return "
+            <style>".file_get_contents(__DIR__."/styles.css")."</style>
             <form action='/login' method='post'>
                 <input type='text' name='user' placeholder='Username' />
                 <input type='password' name='pass' placeholder='Password' />
@@ -78,6 +76,7 @@ class SessionAuth {
     public static function post_login() {
         if (isset($_POST['user']) && isset($_POST['pass'])) {
             if (self::login($_POST['user'], $_POST['pass'])) {
+                echo "<style>".file_get_contents(__DIR__."/styles.css")."</style>";
                 echo "<div>Login successful!</div>";
                 echo "<a href='/'>Go to home page</a>";
             } else {
@@ -88,6 +87,7 @@ class SessionAuth {
 
     public static function get_cp() {
         return "
+            <style>".file_get_contents(__DIR__."/styles.css")."</style>
             <div>
                 <h1>Session</h1>
                 <div><a href='/'>Main</a></div>
