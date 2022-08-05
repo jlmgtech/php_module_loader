@@ -9,5 +9,5 @@ add_action("register_menu", function(callable $add_to_menu) {
 });
 
 add_action("register_routes", function() {
-    Router::static("/cp/router/", __DIR__ . "/" . "my-svelte-project/public/");
+    Router::assets("/cp/router/", __DIR__ . "/" . "my-svelte-project/public/");
 });
