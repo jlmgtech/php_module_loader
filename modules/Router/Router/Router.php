@@ -39,6 +39,12 @@ class Router {
         };
     }
 
+    public static function assets() {
+        // TODO
+        // TODO - change the way paths are resolved
+        // given the REQUEST_URI and a GET method, read the respective file
+    }
+
     public static function render() {
         do_action("register_routes");
 
