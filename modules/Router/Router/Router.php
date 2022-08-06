@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . "/" . "DynamicResolver.php";
+require_once __DIR__ . "/" . "SinglePageResolver.php";
 require_once __DIR__ . "/" . "StaticResolver.php";
 require_once __DIR__ . "/" . "helpers.php";
 
@@ -9,6 +10,7 @@ class Router {
     private static $get = NULL;
     private static $post = NULL;
     private static $static = NULL;
+    private static $spas = NULL;
 
     public static function post(string $path, ...$callbacks) {
         $callback = compose_callbacks($callbacks);
@@ -18,6 +20,10 @@ class Router {
     public static function get(string $path, ...$callbacks) {
         $callback = compose_callbacks($callbacks);
         self::$get->set($path, $callback);
+    }
+
+    public static function spa(string $path, string $file) {
+        // serves one file for all requests with path as a prefix
     }
 
     public static function assets(string $path, string $dir) {
@@ -42,15 +48,7 @@ class Router {
         fclose($stderr);
     }
 
-    public static function render_static() {
-        self::$static = self::$static ?? new StaticResolver();
-        $dir = self::$static->get($path);
-        if (!$dir) {
-            self::err("Static asset directory not found for $path");
-            return self::not_found();
-        }
-
-        $file = $dir . "/" . $path;
+    public static function render_static(string $file) {
         if (!file_exists($file)) {
             self::err("File not found in static directory $dir for $path");
             return self::not_found();
@@ -75,35 +73,39 @@ class Router {
     public static function render() {
 
         self::$static = new StaticResolver();
-        self::$get = new DynamicResolver();
-        self::$post = new DynamicResolver();
+        self::$get    = new DynamicResolver();
+        self::$post   = new DynamicResolver();
+        self::$spas   = new SinglePageResolver();
+        $notfound = function() {
+            Router::not_found();
+        };
+        $notallowed = function() {
+            Router::not_allowed();
+        };
 
         do_action("register_routes");
 
         $path = $_SERVER["REQUEST_URI"];
         $method = $_SERVER["REQUEST_METHOD"];
+
         if ($method === "GET") {
-            $callback = self::$get->get($path);
-            if (!$callback) {
-                return self::render_static();
-            }
+
+            $callback = self::$get->get($path) ??
+                self::$static->get($path) ??
+                self::$spas->get($path) ??
+                $notfound;
+
         } else if ($method === "POST") {
-            $callback = self::$post->get($path);
+
+            $callback = self::$post->get($path) ?? $notfound;
+
         } else {
-            return self::not_allowed();
+
+            $callback = $notallowed;
+
         }
 
-        if ($callback) {
-            try {
-                $callback();
-            } catch (Exception $e) {
-                self::server_error();
-                throw $e;
-            }
-        } else {
-            self::err("No route found for $method $path");
-            return self::not_found();
-        }
+        $callback();
     }
 
 };
