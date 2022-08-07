@@ -23,7 +23,13 @@ class Router {
     }
 
     public static function spa(string $path, string $file) {
-        // serves one file for all requests with path as a prefix
+        // TODO:
+        // should we allow middleware for these requests?
+        // like, how would you do authentication.
+        // Should we do that in the first place?
+        // So many questions...
+        // Consider the same for ->assets()
+        self::$spas->set($path, $file);
     }
 
     public static function assets(string $path, string $dir) {
@@ -50,7 +56,11 @@ class Router {
 
     public static function render_static(string $file) {
         if (!file_exists($file)) {
-            self::err("File not found in static directory $dir for $path");
+            self::err("File not found '$file'");
+            return self::not_found();
+        }
+        if (is_dir($file)) {
+            self::err("Cannot render a directory '$file'");
             return self::not_found();
         }
         $ext = pathinfo($file, PATHINFO_EXTENSION);
@@ -58,10 +68,62 @@ class Router {
             self::err("File is a PHP file in static directory $dir for $path");
             return self::not_found();
         }
-        $mime = mime_content_type($file);
-        header("Content-Type: $mime");
-        readfile($file);
-        return;
+        switch (strtolower($ext)) {
+            case "js":
+                header("Content-Type: application/javascript");
+                break;
+            case "css":
+                header("Content-Type: text/css");
+                break;
+            case "html":
+                header("Content-Type: text/html");
+                break;
+            case "txt":
+                header("Content-Type: text/plain");
+                break;
+            case "json":
+                header("Content-Type: application/json");
+                break;
+            case "xml":
+                header("Content-Type: application/xml");
+                break;
+            case "svg":
+                header("Content-Type: image/svg+xml");
+                break;
+            case "png":
+                header("Content-Type: image/png");
+                break;
+            case "jpg":
+                header("Content-Type: image/jpeg");
+                break;
+            case "gif":
+                header("Content-Type: image/gif");
+                break;
+            case "ico":
+                header("Content-Type: image/x-icon");
+                break;
+            case "woff":
+                header("Content-Type: application/font-woff");
+                break;
+            case "woff2":
+                header("Content-Type: application/font-woff2");
+                break;
+            case "ttf":
+                header("Content-Type: application/font-ttf");
+                break;
+            case "eot":
+                header("Content-Type: application/vnd.ms-fontobject");
+                break;
+            case "otf":
+                header("Content-Type: application/font-otf");
+                break;
+            case "mjs":
+                header("Content-Type: application/javascript");
+                break;
+            default:
+                header("Content-Type: " . mime_content_type($file));
+        }
+        return readfile($file);
     }
 
     public static function server_error() {

@@ -2,7 +2,7 @@
 
 class BasicLogger {
 
-    public static function write($lvl, $msg) {
+    public static function write(string $lvl, string $msg) {
         $file = sprintf("%s/%s", __DIR__, "log.txt");
         $fp = fopen($file, "a");
         if (!$fp) {
@@ -13,19 +13,23 @@ class BasicLogger {
         fclose($fp);
     }
 
-    public static function log($msg) {
+    public static function log(string $msg) {
         self::write("LOG ", $msg);
     }
 
-    public static function info($msg) {
+    public static function debug(string $msg) {
+        self::write("DEBUG", $msg);
+    }
+
+    public static function info(string $msg) {
         self::write("INFO", $msg);
     }
 
-    public static function warn($msg) {
+    public static function warn(string $msg) {
         self::write("WARN", $msg);
     }
 
-    public static function error($msg) {
+    public static function error(string $msg) {
         self::write("FAIL", $msg);
     }
 
