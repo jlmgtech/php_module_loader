@@ -1,6 +1,6 @@
 <?php
 
-class ModuleManager {
+class TestModuleManager {
 
     private static $menu = [];
 

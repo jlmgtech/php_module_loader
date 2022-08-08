@@ -1,6 +1,6 @@
 <?php
 
-class BasicLogger {
+class TestLogger {
 
     public static function write(string $lvl, string $msg) {
         $file = sprintf("%s/%s", __DIR__, "log.log");

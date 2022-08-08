@@ -1,6 +1,6 @@
 <?php
 
-class SessionAuth {
+class TestAuth {
 
     private static $users = [
         "admin" => [

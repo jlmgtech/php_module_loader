@@ -28,19 +28,19 @@ require_once __DIR__ . "/" . "lib/load_modules.php";
 require_once __DIR__ . "/" . "lib/hook_functions.php";
 
 $safe_mode = [
-    "Auth" => "SessionAuth",
-    "Router" => "Router",
-    "Core" => "ExampleCore",
-    "ModuleManager" => "ModuleManager",
-    "Logging" => "BasicLogger",
+    "Auth"          => "TestAuth",
+    "Router"        => "TestRouter",
+    "Core"          => "TestCore",
+    "ModuleManager" => "TestModuleManager",
+    "Logging"       => "TestLogger",
 ];
 
 $user_mode = [
-    "Auth" => "SessionAuth",
-    "Router" => "Router",
-    "Core" => "ExampleCore",
-    "ModuleManager" => "ModuleManager",
-    "Logging" => "BasicLogger", 
+    "Auth"          => "TestAuth",
+    "Router"        => "TestRouter",
+    "Core"          => "TestCore",
+    "ModuleManager" => "TestModuleManager",
+    "Logging"       => "TestLogger", 
 ];
 
 $mode = $user_mode;

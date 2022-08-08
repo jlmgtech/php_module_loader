@@ -5,7 +5,7 @@ require_once __DIR__ . "/" . "SinglePageResolver.php";
 require_once __DIR__ . "/" . "StaticResolver.php";
 require_once __DIR__ . "/" . "helpers.php";
 
-class Router {
+class TestRouter {
 
     private static $get = NULL;
     private static $post = NULL;
