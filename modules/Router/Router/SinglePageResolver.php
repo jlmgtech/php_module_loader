@@ -17,6 +17,12 @@ class SinglePageResolver {
 
     public function get(string $path) {
         $path = clean_path_string($path);
+
+        // single page resolver only acts on directories
+        // this is to prevent collisions with static resolver
+        if (path_has_extension($path))
+            return NULL;
+
         foreach ($this->routes as $pattern => $file) {
 
             if (strpos($path, $pattern) === 0) {

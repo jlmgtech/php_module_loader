@@ -14,3 +14,7 @@ function compose_callbacks(array $callbacks): callable {
         return true;
     };
 }
+
+function path_has_extension(string $path): bool {
+    return strpos(basename($path), ".") !== false;
+}

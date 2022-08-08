@@ -16,6 +16,12 @@ class StaticResolver {
 
     public function get(string $path) {
         $path = clean_path_string($path);
+
+        // We only want to serve files, not directories.
+        // This is to prevent collisions with single page resolver.
+        if (!path_has_extension($path))
+            return NULL;
+
         foreach ($this->static as $pattern => $dir) {
 
             if (strpos($path, $pattern) === 0) {
