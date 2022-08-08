@@ -22,7 +22,7 @@ class Router {
         self::$get->set($path, $callback);
     }
 
-    public static function spa(string $path, string $file) {
+    public static function single(string $path, string $file) {
         // TODO:
         // should we allow middleware for these requests?
         // like, how would you do authentication.
