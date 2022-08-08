@@ -25,7 +25,6 @@ register_shutdown_function(function() {
  * */
 
 require_once __DIR__ . "/" . "lib/load_modules.php";
-require_once __DIR__ . "/" . "lib/hook_functions.php";
 
 $safe_mode = [
     "Auth"          => "TestAuth",

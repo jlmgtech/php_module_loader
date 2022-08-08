@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/" . "hook_functions.php";
+require_once __DIR__ . "/" . "module_hooks.php";
 define("MODULES_DIR", __DIR__ . "/../modules");
 define("YELLOW", "\033[1;33m");
 define("RED", "\033[1;31m");
