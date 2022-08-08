@@ -9,7 +9,7 @@ class SinglePageResolver {
     public function set(string $pattern, string $file) {
         $pattern = clean_path_string($pattern);
         if (isset($this->routes[$pattern])) {
-            do_action("error", "SPA Route already exists: $pattern");
+            trigger("error", "SPA Route already exists: $pattern");
         } else {
             $this->routes[$pattern] = $file;
         }

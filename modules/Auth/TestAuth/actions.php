@@ -1,10 +1,10 @@
 <?php
 
-add_action("register_menu", function(callable $add_to_menu) {
-    $add_to_menu("Session", "/cp/session/", "dot-circle");
+on("menu", function() {
+    AppMenu::add_to_menu("Session", "/cp/session/", "dot-circle");
 });
 
-add_action("register_routes", function() {
+on("routes", function() {
     Router::get("/login", function() {
         echo Auth::get_login();
     });

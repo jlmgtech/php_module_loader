@@ -31,7 +31,7 @@ $safe_mode = [
     "Auth"          => "TestAuth",
     "Router"        => "TestRouter",
     "Core"          => "TestCore",
-    "ModuleManager" => "TestModuleManager",
+    "AppMenu"       => "TestAppMenu",
     "Logging"       => "TestLogger",
 ];
 
@@ -39,13 +39,13 @@ $user_mode = [
     "Auth"          => "TestAuth",
     "Router"        => "TestRouter",
     "Core"          => "TestCore",
-    "ModuleManager" => "TestModuleManager",
+    "AppMenu"       => "TestAppMenu",
     "Logging"       => "TestLogger", 
 ];
 
 $mode = $user_mode;
 $loader = new ModuleLoader($mode);
-do_action("init");
+trigger("init");
 
 Router::render();
 

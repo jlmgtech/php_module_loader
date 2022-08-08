@@ -1,21 +1,21 @@
 <?php
 
-add_action("init", function() {
+on("init", function() {
     //echo "BasicLogger initialized\n";
 });
 
-add_action("register_menu", function(callable $add_to_menu) {
-    $add_to_menu("Basic Logger", "/cp/basic-logger/", "list-alt");
+on("menu", function() {
+    AppMenu::add_to_menu("Basic Logger", "/cp/basic-logger/", "list-alt");
 });
 
-add_action("error", function($message) {
+on("error", function($message) {
     register_shutdown_function(function() use ($message) {
         echo "<h1 style='color:red'>Error</h1>";
         echo "<p>$message</p>";
     });
 });
 
-add_action("register_routes", function() {
+on("routes", function() {
     Router::get("/cp/basic-logger/", "Auth::login_guard", function() {
         $output = "";
         $logs = Logging::get_logs();

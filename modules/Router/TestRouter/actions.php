@@ -1,14 +1,14 @@
 <?php
 
-add_action("init", function() {
+on("init", function() {
     //echo "ExampleCore initialized\n";
 });
 
-add_action("register_menu", function(callable $add_to_menu) {
-    $add_to_menu("Router", "/cp/router/", "registered");
+on("menu", function() {
+    AppMenu::add_to_menu("Router", "/cp/router/", "registered");
 });
 
-add_action("register_routes", function() {
+on("routes", function() {
     Router::single("/cp/router/", __DIR__ . "/" . "my-svelte-project/public/index.html");
     Router::assets("/cp/router/", __DIR__ . "/" . "my-svelte-project/public/");
 });

@@ -1,13 +1,13 @@
 <?php
 
-class TestModuleManager {
+class TestAppMenu {
 
     private static $menu = [];
 
     public static function onload() {
     }
 
-    public static function add_menu_entry(string $name, string $url, string $icon) {
+    public static function add_to_menu(string $name, string $url, string $icon) {
         self::$menu[$name] = [
             "url" => $url,
             "icon" => $icon,
@@ -17,7 +17,7 @@ class TestModuleManager {
     public static function render() {
         $output = "";
         // dispatch registration hook
-        do_action("register_menu", [get_class(), "add_menu_entry"]);
+        trigger("menu");
 
         // render menu
         $output .= "<ul>\n";

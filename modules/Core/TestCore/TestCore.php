@@ -23,7 +23,7 @@ class TestCore {
             <style>".file_get_contents(__DIR__."/styles.css")."</style>
             <h1>Example Core ($account)</h1>
             <div>
-                <a href='/cp/module-menu/'>Module Manager</a>
+                <a href='/cp/app-menu/'>Module Manager</a>
             </div>
         ";
     }

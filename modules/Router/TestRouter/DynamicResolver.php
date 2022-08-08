@@ -9,7 +9,7 @@ class DynamicResolver {
     public function set(string $pattern, $callback) {
         $pattern = clean_path_string($pattern);
         if (isset($this->routes[$pattern])) {
-            //do_action("error", "Route already exists: $pattern");
+            //trigger("error", "Route already exists: $pattern");
         } else {
             $this->routes[$pattern] = $callback;
         }

@@ -145,7 +145,7 @@ class TestRouter {
             Router::not_allowed();
         };
 
-        do_action("register_routes");
+        trigger("routes");
 
         $path = $_SERVER["REQUEST_URI"];
         $method = $_SERVER["REQUEST_METHOD"];

@@ -2,6 +2,13 @@
 
 require_once __DIR__ . "/" . "hook_functions.php";
 define("MODULES_DIR", __DIR__ . "/../modules");
+define("YELLOW", "\033[1;33m");
+define("RED", "\033[1;31m");
+define("GREEN", "\033[1;32m");
+define("RED_BG", "\033[41m");
+define("LIGHT_BLUE", "\033[1;34m");
+define("RST", "\033[0m");
+define("PURE_BLUE", "\033[0;34m");
 
 function get_module_dir(string $module) {
     $module_dir = sprintf("%s/%s", MODULES_DIR, $module);
@@ -11,13 +18,21 @@ function get_module_dir(string $module) {
 function get_driver_dir(string $module, string $driver) {
     // if you want, you can memoize this function
     $driver_dir = sprintf("%s/%s/%s", MODULES_DIR, $module, $driver);
-    return is_dir($driver_dir) ? $driver_dir : NULL;
+    $dir = is_dir($driver_dir) ? $driver_dir : NULL;
+    if (!$dir) {
+        module_log("WARN", "driver directory not found: $driver_dir");
+    }
+    return $dir;
 }
 
 function get_driver_file(string $module, string $driver) {
     // if you want, you can memoize this function
     $driver_file = sprintf("%s/%s.php", get_driver_dir($module, $driver), $driver);
-    return is_file($driver_file) ? $driver_file : NULL;
+    $file = is_file($driver_file) ? $driver_file : NULL;
+    if (!$file) {
+        module_log("WARN", "driver file not found: $driver_file");
+    }
+    return $file;
 }
 
 function get_action_file(string $module, string $driver) {
@@ -36,9 +51,27 @@ function get_dirs($dir) {
     return $output;
 }
 
-function module_log($msg) {
+function module_log($lvl, $msg) {
     $stderr = fopen("php://stderr", "w");
-    fprintf($stderr, "%s\n", $msg);
+    $pre = "";
+    switch ($lvl) {
+        case "WARN":
+            $pre = YELLOW . "WARN" . RST;
+            break;
+        case "FAIL":
+            $pre = RST . RED_BG . "FAIL" . RST . RED;
+            break;
+        case "INFO":
+            $pre = LIGHT_BLUE . "INFO" . RST;
+            break;
+        case "LOG":
+            $pre = RST . " LOG" . RST;
+            break;
+        default:
+            $pre = "";
+            break;
+    }
+    fprintf($stderr, "%s %s %s%s\n", date("Y-m-d H:i:s"), $pre, $msg, RST);
 }
 
 
@@ -63,10 +96,15 @@ class ModuleLoader {
     // ]
 
     public function __construct(array $modconf) {
+        module_log("", GREEN . "\n======REQUEST started======");
         spl_autoload_register([$this, "load_module"]);
         $this->modconf = $modconf;
         $this->resolve_drivers();
         $this->add_module_actions();
+    }
+
+    public function __destruct() {
+        module_log("", PURE_BLUE . "======REQUEST finished======\n");
     }
 
     public function get_all_modules(): array {
@@ -138,9 +176,6 @@ class ModuleLoader {
             if (is_string($drivers))
                 $drivers = [$drivers];
             $this->drivers[$module] = $this->resolve_driver($module, $drivers);
-            if ($this->drivers[$module] === NULL) {
-                module_log("FAIL: Could not resolve driver for module $module");
-            }
         }
     }
     private function resolve_driver(string $module, array $drivers) {
@@ -150,7 +185,7 @@ class ModuleLoader {
                 return $driver;
             }
         }
-        module_log("FAIL: Could not resolve driver for module $module");
+        module_log("FAIL", "Could not resolve driver for module $module");
         return NULL;
     }
 
@@ -161,26 +196,26 @@ class ModuleLoader {
         }
 
         if (class_exists($module)) {
-            module_log("INFO: module '$module' already loaded\n");
+            module_log("INFO", "module '$module' already loaded");
             return $module;
         }
 
         $driver = $this->drivers[$module];
         if ($driver === NULL) {
-            module_log("FAIL: Could not resolve driver for module $module\n");
+            module_log("FAIL", "Could not resolve driver for module $module");
             return NULL;
         }
 
         $driver_file = get_driver_file($module, $driver);
         if (!$driver_file) {
-            module_log("WARN: requested $module driver '$driver' is not " .
+            module_log("WARN", "requested $module driver '$driver' is not " .
                 "installed on this system for module $module\n");
             return NULL;
         }
 
         include_once($driver_file);
         if (!class_exists($driver)) {
-            module_log("WARN: '$driver_file' did not export a module named $driver\n");
+            module_log("WARN", "'$driver_file' did not export a module named $driver");
             return NULL;
         }
 
@@ -190,7 +225,7 @@ class ModuleLoader {
         if (method_exists($module, "onload"))
             $module::onload();
 
-        module_log("INFO: successfully loaded module $module with driver '$driver'\n");
+        module_log("INFO", "successfully loaded module $module with driver '$driver'");
         return $driver;
     }
 }
