@@ -15,13 +15,19 @@ class StaticResolver {
     }
 
     public function get(string $path) {
-        $path = clean_path_string($path);
+        // For security reasons, if there's two dots in a row, run away!
+        // This is to prevent directory traversal attacks.
+        // It may not be a perfect solution, but it's pretty decent (and fast)
+        // TODO: Consider making this configurable?
+        if (strpos($path, ".."))
+            return NULL;
 
         // We only want to serve files, not directories.
         // This is to prevent collisions with single page resolver.
         if (!path_has_extension($path))
             return NULL;
 
+        $path = clean_path_string($path);
         foreach ($this->static as $pattern => $dir) {
 
             if (strpos($path, $pattern) === 0) {
