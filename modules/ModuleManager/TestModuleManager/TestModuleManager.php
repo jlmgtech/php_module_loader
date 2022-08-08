@@ -21,28 +21,26 @@ class TestModuleManager {
 
         // render menu
         $output .= "<ul>\n";
+        $i = 0;
         foreach (self::$menu as $name => $entry) {
-            $green = rand()%100;
-            $red = $green + rand()%100;
-            $blue = rand()%100;
-
-            $random_color = sprintf("rgb(%d, %d, %d)", $red, $green, rand()%200);
             $output .= "
-                <li style='background:$random_color'>
-                    <a href='{$entry["url"]}' style='color:#fff'>
-                        <div>{$name}</div>
-                        <br />
-                        <div><i class='fa fa-{$entry["icon"]}'></i></div>
+                <li>
+                    <a href='{$entry["url"]}'>
+                        <div class='icon'><i class='fa fa-{$entry["icon"]}'></i></div>
+                        <div class='name'>{$name}</div>
                     </a>
                 </li>\n
             ";
+            $i++;
         }
         $output .= "</ul>\n";
         return "
-            <style>body{background:#111;color:#fff}a[href] {text-decoration:none;text-align:center;} ul{list-style:none} li{padding:1em;margin:1em;min-width:30%;display:inline-block;}</style>
             <link rel='stylesheet' type='text/css' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css' />
-            <div style='width:50%;margin:auto;font-family:sans-serif;'>
-                <h1>Modules</h1>
+            <style>".file_get_contents(__DIR__ . "/styles.css")."</style>
+            <div class='menu'>
+                <br />
+                <h1>Apps</h1>
+                <br />
                 <div>$output</div>
             </div>
         ";
