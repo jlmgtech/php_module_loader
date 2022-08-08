@@ -1,4 +1,16 @@
 <?php
+set_error_handler(
+    function($errno, $errstr, $errfile, $errline) {
+        global $_caughtError;
+        $_caughtError = true;
+        throw new \ErrorException($errstr, $errno, 1, $errfile, $errline);
+    }
+);
+register_shutdown_function(function() {
+    if ($error = error_get_last()) {
+        echo "Fatal error: {$error['message']} in {$error['file']} on line {$error['line']}";
+    }
+});
 
 /*
  * TODO:

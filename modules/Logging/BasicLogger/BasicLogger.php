@@ -3,7 +3,7 @@
 class BasicLogger {
 
     public static function write(string $lvl, string $msg) {
-        $file = sprintf("%s/%s", __DIR__, "log.txt");
+        $file = sprintf("%s/%s", __DIR__, "log.log");
         $fp = fopen($file, "a");
         if (!$fp) {
             var_dump(error_get_last());
@@ -34,7 +34,7 @@ class BasicLogger {
     }
 
     public static function get_logs() {
-        $fdata = trim(file_get_contents(__DIR__ . "/" . "log.txt"));
+        $fdata = trim(file_get_contents(__DIR__ . "/" . "log.log"));
         $fdata = explode("\n", $fdata);
         $output = [];
         foreach ($fdata as $line) {
