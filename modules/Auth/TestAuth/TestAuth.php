@@ -26,11 +26,15 @@ class TestAuth {
         return false;
     }
 
-    public static function login_guard() {
-        if (!self::is_logged_in()) {
-            echo self::render_login();
-            return false;
-        }
+    public static function login_guard($fn) {
+        return function() use ($fn) {
+            if (self::is_logged_in()) {
+                return $fn();
+            } else {
+                echo self::render_login();
+                return false;
+            }
+        };
     }
 
     public static function render_login(): string {

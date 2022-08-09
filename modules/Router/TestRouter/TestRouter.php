@@ -13,12 +13,12 @@ class TestRouter {
     private static $spas = NULL;
 
     public static function post(string $path, ...$callbacks) {
-        $callback = compose_callbacks($callbacks);
+        $callback = apply_decorators($callbacks);
         self::$post->set($path, $callback);
     }
 
     public static function get(string $path, ...$callbacks) {
-        $callback = compose_callbacks($callbacks);
+        $callback = apply_decorators($callbacks);
         self::$get->set($path, $callback);
     }
 
