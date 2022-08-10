@@ -182,18 +182,25 @@ class TestRouter {
                     $path
                 ));
             }
-            //if (self::$spas->current_module) {
-            //    self::$current_module = self::$spas->current_module;
-            //    self::$current_driver = self::$spas->current_driver;
-            //}
 
         } else if ($method === "POST") {
 
-            $callback = self::$post->get($path) ?? $notfound;
+            $route = self::$post->get($path);
+            if ($route) {
+                self::set_current($route);
+                $callback = $route;
+            } else {
+                $callback = $notfound;
+            }
 
         } else {
 
             $callback = $notallowed;
+            self::set_current(new RouterRoute(
+                "NotAllowedModule",
+                "NotAllowedDriver",
+                $path
+            ));
 
         }
 
