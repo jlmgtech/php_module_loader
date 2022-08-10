@@ -35,4 +35,16 @@ class Utils {
         return $output;
     }
 
+    // lol this could be more efficient...
+    public static function to_slug(string $str): string {
+        $output = "";
+        for ($i = 0; $i < strlen($str); $i++) {
+            if (ord($str[$i]) >= ord("A") && ord($str[$i]) <= ord("Z")) {
+                $output .= "-";
+            }
+            $output .= strtolower($str[$i]);
+        }
+        return rawurlencode(trim($output, "-"));
+    }
+
 }

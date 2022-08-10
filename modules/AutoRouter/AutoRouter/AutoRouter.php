@@ -9,20 +9,26 @@ class AutoRouter {
         return self::$modules[$module][$page];
     }
 
+    /// redirects you to the specified module page
     public static function go(string $module, string $page): void {
         header("Location: " . self::get($module, $page));
+        exit();
     }
 
     /// sets the link to the page for the given module to the subroute
     public static function set(string $page, string $subroute, callable $fn): void {
         $module = Actions::current_module(); // returns "" if not in an action
+        $driver = Actions::current_driver();
         if ($module === "")
             throw new Exception(__METHOD__."(...) can't be called outside an action");
 
-        $path = sprintf("%s/%s/%s", $module, $page, Utils::clean_path($subroute));
+        $modslug = Utils::to_slug($module);
+        $drvslug = Utils::to_slug($driver);
+        $pgeslug = Utils::to_slug($page);
+        $path = sprintf("%s/%s/%s/%s", $modslug, $drvslug, $pgeslug, Utils::clean_path($subroute));
         self::$modules[$module] = self::$modules[$module] ?? [];
-        self::$modules[$module][$page] = $subroute;
-        module_log("WARN", $path);
+        self::$modules[$module][$page] = $path;
+        //module_log("WARN", $path);
         Router::get($path, $fn);
     }
 
