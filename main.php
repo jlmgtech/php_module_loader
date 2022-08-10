@@ -8,7 +8,7 @@ set_error_handler(
 );
 register_shutdown_function(function() {
     if ($error = error_get_last()) {
-        echo "Fatal error: {$error['message']} in {$error['file']} on line {$error['line']}";
+        echo "<pre>Fatal error: {$error['message']} in {$error['file']} on line {$error['line']}</pre>";
     }
 });
 

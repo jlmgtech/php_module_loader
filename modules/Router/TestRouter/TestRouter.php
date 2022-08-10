@@ -10,6 +10,21 @@ class TestRouter {
     private static $post = NULL;
     private static $static = NULL;
     private static $spas = NULL;
+    private static $current_route = NULL;
+
+    public static function current_module() {
+        return self::$current_route !== NULL ?
+            self::$current_route->get_module() : NULL;
+    }
+
+    public static function current_driver() {
+        return self::$current_route !== NULL ?
+            self::$current_route->get_driver() : NULL;
+    }
+
+    private static function set_current(RouterRoute $route) {
+        self::$current_route = $route;
+    }
 
     public static function post(string $path, ...$callbacks) {
         $callback = Utils::apply_decorators($callbacks);
@@ -23,11 +38,9 @@ class TestRouter {
 
     public static function single(string $path, string $file) {
         // TODO:
-        // should we allow middleware for these requests?
-        // like, how would you do authentication.
-        // Should we do that in the first place?
-        // So many questions...
-        // Consider the same for ->assets()
+        // should we allow middleware for these requests? for now, we'll just
+        // assume no middleware, because auth will be enforced during ajax
+        // requests, and the SPA will handle those failures however it wants.
         self::$spas->set($path, $file);
     }
 
@@ -155,6 +168,24 @@ class TestRouter {
                 self::$static->get($path) ??
                 self::$spas->get($path) ??
                 $notfound;
+
+            if (self::$get->get_current()) {
+                self::set_current(self::$get->get_current());
+            } else if (self::$static->get_current()) {
+                self::set_current(self::$static->get_current());
+            } else if (self::$spas->get_current()) {
+                self::set_current(self::$spas->get_current());
+            } else {
+                self::set_current(new RouterRoute(
+                    "NotFoundModule",
+                    "NotFoundDriver",
+                    $path
+                ));
+            }
+            //if (self::$spas->current_module) {
+            //    self::$current_module = self::$spas->current_module;
+            //    self::$current_driver = self::$spas->current_driver;
+            //}
 
         } else if ($method === "POST") {
 

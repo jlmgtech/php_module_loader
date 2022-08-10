@@ -5,10 +5,10 @@ Actions::on("menu", function() {
 });
 
 Actions::on("routes", function() {
-    $module = Actions::current_module();
-    Router::get("/cp/auto-router/", function() use($module) {
-        $_GLOBALS["module"] = $module;
+
+    AutoRouter::set("index", "/you-found-me", function() {
         include __DIR__ . "/views/index.php";
-        unset($_GLOBALS["module"]);
     });
+
+    //Router::get("/cp/auto-router/", function() use($module) { });
 });

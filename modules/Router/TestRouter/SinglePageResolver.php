@@ -1,15 +1,22 @@
 <?php
 
-class SinglePageResolver {
+require_once __DIR__ . "/RouterRoute.php";
+require_once __DIR__ . "/RouterResolver.php";
+
+class SinglePageResolver extends RouterResolver {
 
     public $routes = [];
 
-    public function set(string $pattern, string $file) {
+    public function set(string $pattern, $file) {
         $pattern = Utils::clean_path($pattern);
         if (isset($this->routes[$pattern])) {
             Actions::trigger("error", "SPA Route already exists: $pattern");
         } else {
-            $this->routes[$pattern] = $file;
+            $this->routes[$pattern] = new RouterRoute(
+                Actions::current_module(),
+                Actions::current_driver(),
+                $file
+            );
         }
     }
 
@@ -25,6 +32,7 @@ class SinglePageResolver {
 
             if (strpos($path, $pattern) === 0) {
                 Logging::debug("SinglePageResolver::get($path) SUCCESS");
+                $this->set_current($route);
                 return function() use ($pattern, $file, $path) {
                     Router::render_static($file);
                 };
