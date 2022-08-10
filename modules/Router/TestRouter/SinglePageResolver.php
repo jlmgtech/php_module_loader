@@ -7,7 +7,7 @@ class SinglePageResolver {
     public function set(string $pattern, string $file) {
         $pattern = Utils::clean_path($pattern);
         if (isset($this->routes[$pattern])) {
-            trigger("error", "SPA Route already exists: $pattern");
+            Actions::trigger("error", "SPA Route already exists: $pattern");
         } else {
             $this->routes[$pattern] = $file;
         }

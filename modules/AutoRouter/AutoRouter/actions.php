@@ -1,10 +1,10 @@
 <?php
 
-on("menu", function() {
+Actions::on("menu", function() {
     AppMenu::add_to_menu("AutoRouter", "/cp/auto-router/", "code");
 });
 
-on("routes", function() {
+Actions::on("routes", function() {
     $module = ModuleLoader::get_action_module();
     module_log("INFO", "AutoRouter: module is $module");
     Router::get("/cp/auto-router/", function() use($module) {

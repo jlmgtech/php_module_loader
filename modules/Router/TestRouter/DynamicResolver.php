@@ -7,7 +7,7 @@ class DynamicResolver {
     public function set(string $pattern, $callback) {
         $pattern = Utils::clean_path($pattern);
         if (isset($this->routes[$pattern])) {
-            //trigger("error", "Route already exists: $pattern");
+            //Actions::trigger("error", "Route already exists: $pattern");
         } else {
             $this->routes[$pattern] = $callback;
         }

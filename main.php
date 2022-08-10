@@ -24,7 +24,7 @@ register_shutdown_function(function() {
  * - rpc registration               loaded on demand I guess?       (hard)
  * */
 
-require_once __DIR__ . "/" . "lib/load_modules.php";
+require_once __DIR__ . "/" . "lib/ModuleLoader.php";
 
 $safe_mode = [
     "AutoRouter"    => "AutoRouter",
@@ -37,8 +37,6 @@ $safe_mode = [
 ];
 
 $loader = new ModuleLoader($safe_mode);
-trigger("init");
-
 Router::render();
 
 //$html = file_get_contents(__DIR__ . "/" . "index.tpl");

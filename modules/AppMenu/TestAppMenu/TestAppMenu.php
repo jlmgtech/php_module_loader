@@ -17,7 +17,7 @@ class TestAppMenu {
     public static function render() {
         $output = "";
         // dispatch registration hook
-        trigger("menu");
+        Actions::trigger("menu");
 
         // render menu
         $output .= "<ul>\n";

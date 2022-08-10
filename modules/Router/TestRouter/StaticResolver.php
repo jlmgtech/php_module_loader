@@ -6,7 +6,7 @@ class StaticResolver {
     public function set(string $pattern, string $dir) {
         $pattern = Utils::clean_path($pattern);
         if (isset($this->static[$pattern])) {
-            trigger("error", "Assets route already exists: $pattern");
+            Actions::trigger("error", "Assets route already exists: $pattern");
         } else {
             $this->static[$pattern] = $dir;
         }
