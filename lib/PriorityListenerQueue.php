@@ -1,14 +1,16 @@
 <?php
 namespace module_loader;
 
+require_once __DIR__ . "/" . "ActionListener.php";
+
 class PriorityListenerQueue
 {
     private $queue = [];
 
-    public function push(callable $value, int $priority): int
+    public function push(\ActionListener $listener, int $priority): int
     {
         $this->queue[$priority] = $this->queue[$priority] ?? [];
-        $this->queue[$priority][] = $value;
+        $this->queue[$priority][] = $listener;
         return count($this->queue[$priority]);
     }
 
@@ -26,7 +28,8 @@ class PriorityListenerQueue
     public function pop(): callable
     {
         $highest = max(array_keys($this->queue));
-        return array_shift($this->queue[$highest]);
+        $listener = array_shift($this->queue[$highest]);
+        return $listener->func;
     }
 
     public function remove(callable $target): int
@@ -34,7 +37,7 @@ class PriorityListenerQueue
         $num_removed = 0;
         foreach ($this->queue as $priority => &$listeners) {
             $listeners = array_filter($listeners, function($listener) use($target, &$num_removed) {
-                $is_target = $listener === $target;
+                $is_target = $listener->func === $target;
                 if ($is_target) {
                     $num_removed++;
                     return false;

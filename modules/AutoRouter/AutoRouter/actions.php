@@ -5,8 +5,7 @@ Actions::on("menu", function() {
 });
 
 Actions::on("routes", function() {
-    $module = ModuleLoader::get_action_module();
-    module_log("INFO", "AutoRouter: module is $module");
+    $module = Actions::current_module();
     Router::get("/cp/auto-router/", function() use($module) {
         $_GLOBALS["module"] = $module;
         include __DIR__ . "/views/index.php";

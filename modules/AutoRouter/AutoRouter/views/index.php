@@ -7,7 +7,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
     </head>
     <body>
-        <h1> This is the auto router page. </h1>
-        <div> <?= $_GLOBALS["module"] ?> </div>
+        <h1> You are viewing <?= $_GLOBALS["module"] ?> </h1>
     </body>
 </html>
