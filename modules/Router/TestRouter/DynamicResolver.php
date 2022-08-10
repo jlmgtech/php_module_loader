@@ -1,13 +1,11 @@
 <?php
 
-require_once __DIR__ . "/" . "helpers.php";
-
 class DynamicResolver {
 
     public $routes = [];
 
     public function set(string $pattern, $callback) {
-        $pattern = clean_path_string($pattern);
+        $pattern = Utils::clean_path($pattern);
         if (isset($this->routes[$pattern])) {
             //trigger("error", "Route already exists: $pattern");
         } else {
@@ -16,7 +14,7 @@ class DynamicResolver {
     }
 
     public function get(string $path) {
-        $path = clean_path_string($path);
+        $path = Utils::clean_path($path);
         return $this->routes[$path] ?? NULL;
     }
 

@@ -27,23 +27,16 @@ register_shutdown_function(function() {
 require_once __DIR__ . "/" . "lib/load_modules.php";
 
 $safe_mode = [
+    "AutoRouter"    => "AutoRouter",
     "Auth"          => "TestAuth",
     "Router"        => "TestRouter",
+    "Utils"         => "Utils",
     "Core"          => "TestCore",
     "AppMenu"       => "TestAppMenu",
     "Logging"       => "TestLogger",
 ];
 
-$user_mode = [
-    "Auth"          => "TestAuth",
-    "Router"        => "TestRouter",
-    "Core"          => "TestCore",
-    "AppMenu"       => "TestAppMenu",
-    "Logging"       => "TestLogger", 
-];
-
-$mode = $user_mode;
-$loader = new ModuleLoader($mode);
+$loader = new ModuleLoader($safe_mode);
 trigger("init");
 
 Router::render();

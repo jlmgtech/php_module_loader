@@ -1,13 +1,11 @@
 <?php
 
-require_once __DIR__ . "/" . "helpers.php";
-
 class SinglePageResolver {
 
     public $routes = [];
 
     public function set(string $pattern, string $file) {
-        $pattern = clean_path_string($pattern);
+        $pattern = Utils::clean_path($pattern);
         if (isset($this->routes[$pattern])) {
             trigger("error", "SPA Route already exists: $pattern");
         } else {
@@ -16,11 +14,11 @@ class SinglePageResolver {
     }
 
     public function get(string $path) {
-        $path = clean_path_string($path);
+        $path = Utils::clean_path($path);
 
         // single page resolver only acts on directories
         // this is to prevent collisions with static resolver
-        if (path_has_extension($path))
+        if (Utils::path_has_extension($path, "*"))
             return NULL;
 
         foreach ($this->routes as $pattern => $file) {

@@ -3,7 +3,6 @@
 require_once __DIR__ . "/" . "DynamicResolver.php";
 require_once __DIR__ . "/" . "SinglePageResolver.php";
 require_once __DIR__ . "/" . "StaticResolver.php";
-require_once __DIR__ . "/" . "helpers.php";
 
 class TestRouter {
 
@@ -13,12 +12,12 @@ class TestRouter {
     private static $spas = NULL;
 
     public static function post(string $path, ...$callbacks) {
-        $callback = apply_decorators($callbacks);
+        $callback = Utils::apply_decorators($callbacks);
         self::$post->set($path, $callback);
     }
 
     public static function get(string $path, ...$callbacks) {
-        $callback = apply_decorators($callbacks);
+        $callback = Utils::apply_decorators($callbacks);
         self::$get->set($path, $callback);
     }
 

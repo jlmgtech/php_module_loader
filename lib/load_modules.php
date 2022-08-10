@@ -95,6 +95,16 @@ class ModuleLoader {
     //    "Logging" => "BasicLogger",
     // ]
 
+    private static $action_module = "";
+    private static $action_driver = "";
+
+    public static function get_action_module() {
+        return self::$action_module;
+    }
+    public static function get_action_driver() {
+        return self::$action_driver;
+    }
+
     public function __construct(array $modconf) {
         module_log("", GREEN . "\n======REQUEST started======");
         spl_autoload_register([$this, "load_module"]);
@@ -164,7 +174,11 @@ class ModuleLoader {
             if ($driver) {
                 $action_file = get_action_file($module, $driver);
                 if ($action_file) {
+                    self::$action_module = $module;
+                    self::$action_driver = $driver;
                     include_once($action_file);
+                    self::$action_driver = "";
+                    self::$action_module = "";
                 }
             }
         }
@@ -229,3 +243,25 @@ class ModuleLoader {
         return $driver;
     }
 }
+
+
+// TODO - consider refactoring into modules
+// consider pulling out as much of this functionality into modules as possible
+// if need be, we can create a special directory for core modules that are required for the system to run.
+// For example:
+//   Actions::in_action()
+//   Actions::module()
+//   Actions::driver()
+//   Actions::action()
+//   Actions::params()
+//   Actions::last_action()
+//   Actions::on(string $name, callable $callback)
+//   Actions::trigger(string $name, ...$args)
+//
+//
+// TODO - consider how you would implement sub-modules
+// Modules themselves can get quite large, and may be subdivided into
+// sub-modules that would not be used or useful by sibling modules. In this
+// case, it does not make sense to clutter up the filesystem with these
+// submodules, so it would make sense to place the code for those modules
+// within the module itself.

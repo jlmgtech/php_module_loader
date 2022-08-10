@@ -1,12 +1,10 @@
 <?php
 
-require_once __DIR__ . "/" . "helpers.php";
-
 class StaticResolver {
     private $static = [];
 
     public function set(string $pattern, string $dir) {
-        $pattern = clean_path_string($pattern);
+        $pattern = Utils::clean_path($pattern);
         if (isset($this->static[$pattern])) {
             trigger("error", "Assets route already exists: $pattern");
         } else {
@@ -24,10 +22,10 @@ class StaticResolver {
 
         // We only want to serve files, not directories.
         // This is to prevent collisions with single page resolver.
-        if (!path_has_extension($path))
+        if (!Utils::path_has_extension($path, "*"))
             return NULL;
 
-        $path = clean_path_string($path);
+        $path = Utils::clean_path($path);
         foreach ($this->static as $pattern => $dir) {
 
             if (strpos($path, $pattern) === 0) {
