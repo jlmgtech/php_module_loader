@@ -22,7 +22,7 @@ class TestRouter {
             self::$current_route->get_driver() : NULL;
     }
 
-    private static function set_current(RouterRoute $route) {
+    private static function set_current($route) {
         self::$current_route = $route;
     }
 
