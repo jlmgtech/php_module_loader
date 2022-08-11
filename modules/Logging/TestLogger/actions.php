@@ -5,7 +5,11 @@ Actions::on("init", function() {
 });
 
 Actions::on("menu", function() {
-    AppMenu::add_to_menu("Basic Logger", "/cp/basic-logger/", "list-alt");
+    AppMenu::add_to_menu(
+        Actions::current_driver(),
+        AutoRouter::get(Actions::current_module(), "index"),
+        "list-alt"
+    );
 });
 
 Actions::on("error", function($message) {
@@ -16,7 +20,7 @@ Actions::on("error", function($message) {
 });
 
 Actions::on("routes", function() {
-    Router::get("/cp/basic-logger/", "Auth::login_guard", function() {
+    AutoRouter::set("index", "/", "Auth::login_guard", function() {
         $output = "";
         $logs = Logging::get_logs();
         $logs = array_reverse($logs);

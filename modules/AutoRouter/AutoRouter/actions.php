@@ -1,7 +1,11 @@
 <?php
 
 Actions::on("menu", function() {
-    AppMenu::add_to_menu("AutoRouter", "/cp/auto-router/", "code");
+    AppMenu::add_to_menu(
+        Actions::current_driver(),
+        AutoRouter::get(Actions::current_module(), "index"),
+        "code"
+    );
 });
 
 Actions::on("routes", function() {

@@ -4,7 +4,7 @@ class Utils {
 
     public static function clean_path(string $path): string {
         $result = trim(preg_replace('/\/+/', '/', $path), "/");
-        return $result ?: "/";
+        return $result ?: "";
     }
 
     public static function compose_callbacks(array $callbacks): callable {

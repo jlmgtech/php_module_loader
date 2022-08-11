@@ -1,10 +1,17 @@
 <?php
 
 Actions::on("menu", function() {
-    AppMenu::add_to_menu("Session", "/cp/session/", "dot-circle");
+    AppMenu::add_to_menu(
+        Actions::current_driver(),
+        AutoRouter::get(Actions::current_module(), "index"),
+        "dot-circle"
+    );
 });
 
 Actions::on("routes", function() {
+    AutoRouter::set("index", "/session", function() {
+        echo Auth::get_cp();
+    });
     Router::get("/login", function() {
         echo Auth::get_login();
     });

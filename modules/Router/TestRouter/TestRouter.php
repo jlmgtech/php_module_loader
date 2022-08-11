@@ -22,6 +22,10 @@ class TestRouter {
         return self::$current_route !== NULL ?
             self::$current_route->get_driver() : NULL;
     }
+    public static function current_payload() {
+        return self::$current_route !== NULL ?
+            self::$current_route->get_payload() : NULL;
+    }
 
     private static function set_current($route) {
         self::$current_route = $route;

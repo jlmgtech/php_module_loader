@@ -20,11 +20,14 @@ class TestCore {
         header("HTTP/1.1 200 OK");
         header("Content-Type: text/html; charset=utf-8");
         $ar_link = AutoRouter::get("AutoRouter", "index");
+        $router_link = AutoRouter::get("Router", "index");
+        $appmenu_lnk = AutoRouter::get("AppMenu", "index");
         echo "
             <style>".file_get_contents(__DIR__."/styles.css")."</style>
             <h1>Example Core ($account)</h1>
-            <div> <a href='/cp/app-menu/'>Module Manager</a> </div>
+            <div> <a href='$appmenu_lnk'>App Menu</a> </div>
             <div> <a href='$ar_link'>Auto Router</a> </div>
+            <div> <a href='$router_link'>Router</a> </div>
         ";
     }
 };

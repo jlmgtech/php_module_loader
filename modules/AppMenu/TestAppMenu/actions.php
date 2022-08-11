@@ -5,11 +5,15 @@ Actions::on("init", function() {
 });
 
 Actions::on("menu", function() {
-    AppMenu::add_to_menu("App Menu", "/cp/app-menu/", "object-ungroup");
+    AppMenu::add_to_menu(
+        Actions::current_driver(),
+        AutoRouter::get(Actions::current_module(), "index"),
+        "object-ungroup"
+    );
 });
 
 Actions::on("routes", function() {
-    Router::get("/cp/app-menu/", "Auth::login_guard", function() {
+    AutoRouter::set("index", "/", function() {
         echo AppMenu::render();
     });
 });
