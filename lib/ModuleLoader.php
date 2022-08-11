@@ -1,7 +1,6 @@
 <?php
 
 require_once __DIR__ . "/" . "Actions.php";
-define("MODULES_DIR", __DIR__ . "/../modules");
 define("YELLOW", "\033[1;33m");
 define("RED", "\033[1;31m");
 define("GREEN", "\033[1;32m");
@@ -9,47 +8,6 @@ define("RED_BG", "\033[41m");
 define("LIGHT_BLUE", "\033[1;34m");
 define("RST", "\033[0m");
 define("PURE_BLUE", "\033[0;34m");
-
-function get_module_dir(string $module) {
-    $module_dir = sprintf("%s/%s", MODULES_DIR, $module);
-    return is_dir($module_dir) ? $module_dir : NULL;
-}
-
-function get_driver_dir(string $module, string $driver) {
-    // if you want, you can memoize this function
-    $driver_dir = sprintf("%s/%s/%s", MODULES_DIR, $module, $driver);
-    $dir = is_dir($driver_dir) ? $driver_dir : NULL;
-    if (!$dir) {
-        module_log("WARN", "driver directory not found: $driver_dir");
-    }
-    return $dir;
-}
-
-function get_driver_file(string $module, string $driver) {
-    // if you want, you can memoize this function
-    $driver_file = sprintf("%s/%s.php", get_driver_dir($module, $driver), $driver);
-    $file = is_file($driver_file) ? $driver_file : NULL;
-    if (!$file) {
-        module_log("WARN", "driver file not found: $driver_file");
-    }
-    return $file;
-}
-
-function get_action_file(string $module, string $driver) {
-    // if you want, you can memoize this function
-    $action_file = sprintf("%s/actions.php", get_driver_dir($module, $driver));
-    return is_file($action_file) ? $action_file : NULL;
-}
-
-function get_dirs($dir) {
-    $output = [];
-    foreach (scandir($dir) as $path) {
-        if ($path[0] === ".") continue; // ignore hidden files
-        if (!is_dir("$dir/$path")) continue; // ignore non-directories
-        $output[] = $path;
-    }
-    return $output;
-}
 
 function module_log($lvl, $msg) {
     $stderr = fopen("php://stderr", "w");
@@ -97,6 +55,7 @@ class ModuleLoader {
 
     private static $action_module = "";
     private static $action_driver = "";
+    private $modules_dir = "";
 
     public static function get_action_module() {
         return self::$action_module;
@@ -105,9 +64,13 @@ class ModuleLoader {
         return self::$action_driver;
     }
 
-    public function __construct(array $modconf) {
+    public function __construct(array $modconf, string $modules_dir) {
         module_log("", GREEN . "\n======REQUEST started======");
         spl_autoload_register([$this, "load_module"]);
+        if (!is_dir($modules_dir)) {
+            throw new Exception("Modules directory '$modules_dir' is not a directory");
+        }
+        $this->modules_dir = $modules_dir;
         $this->modconf = $modconf;
         $this->resolve_drivers();
         $this->add_module_actions();
@@ -172,7 +135,7 @@ class ModuleLoader {
     private function add_module_actions() {
         foreach ($this->drivers as $module => $driver) {
             if ($driver) {
-                $action_file = get_action_file($module, $driver);
+                $action_file = $this->get_action_file($module, $driver);
                 if ($action_file) {
                     self::$action_module = $module;
                     self::$action_driver = $driver;
@@ -194,7 +157,7 @@ class ModuleLoader {
     }
     private function resolve_driver(string $module, array $drivers) {
         foreach ($drivers as $driver) {
-            $driver_file = get_driver_file($module, $driver);
+            $driver_file = $this->get_driver_file($module, $driver);
             if ($driver_file) {
                 return $driver;
             }
@@ -220,7 +183,7 @@ class ModuleLoader {
             return NULL;
         }
 
-        $driver_file = get_driver_file($module, $driver);
+        $driver_file = $this->get_driver_file($module, $driver);
         if (!$driver_file) {
             module_log("WARN", "requested $module driver '$driver' is not " .
                 "installed on this system for module $module\n");
@@ -242,6 +205,48 @@ class ModuleLoader {
         module_log("INFO", "successfully loaded module $module with driver '$driver'");
         return $driver;
     }
+
+    private function get_module_dir(string $module) {
+        $module_dir = sprintf("%s/%s", $this->modules_dir, $module);
+        return is_dir($module_dir) ? $module_dir : NULL;
+    }
+
+    private function get_driver_dir(string $module, string $driver) {
+        // if you want, you can memoize this function
+        $driver_dir = sprintf("%s/%s/%s", $this->modules_dir, $module, $driver);
+        $dir = is_dir($driver_dir) ? $driver_dir : NULL;
+        if (!$dir) {
+            module_log("WARN", "driver directory not found: $driver_dir");
+        }
+        return $dir;
+    }
+
+    private function get_driver_file(string $module, string $driver) {
+        // if you want, you can memoize this function
+        $driver_file = sprintf("%s/%s.php", $this->get_driver_dir($module, $driver), $driver);
+        $file = is_file($driver_file) ? $driver_file : NULL;
+        if (!$file) {
+            module_log("WARN", "driver file not found: $driver_file");
+        }
+        return $file;
+    }
+
+    private function get_action_file(string $module, string $driver) {
+        // if you want, you can memoize this function
+        $action_file = sprintf("%s/actions.php", $this->get_driver_dir($module, $driver));
+        return is_file($action_file) ? $action_file : NULL;
+    }
+
+    private function get_dirs($dir) {
+        $output = [];
+        foreach (scandir($dir) as $path) {
+            if ($path[0] === ".") continue; // ignore hidden files
+            if (!is_dir("$dir/$path")) continue; // ignore non-directories
+            $output[] = $path;
+        }
+        return $output;
+    }
+
 }
 
 

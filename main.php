@@ -36,7 +36,7 @@ $safe_mode = [
     "Logging"       => "TestLogger",
 ];
 
-$loader = new ModuleLoader($safe_mode);
+$loader = new ModuleLoader($safe_mode, __DIR__ . "/modules");
 Router::render();
 
 //$html = file_get_contents(__DIR__ . "/" . "index.tpl");

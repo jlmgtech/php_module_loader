@@ -1,8 +1,9 @@
 <?php
 
-require_once __DIR__ . "/" . "DynamicResolver.php";
-require_once __DIR__ . "/" . "SinglePageResolver.php";
-require_once __DIR__ . "/" . "StaticResolver.php";
+require_once __DIR__ . "/" . "lib/RouterRoute.php";
+require_once __DIR__ . "/" . "lib/DynamicResolver.php";
+require_once __DIR__ . "/" . "lib/SinglePageResolver.php";
+require_once __DIR__ . "/" . "lib/StaticResolver.php";
 
 class TestRouter {
 
