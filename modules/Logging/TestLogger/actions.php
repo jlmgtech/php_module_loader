@@ -1,9 +1,5 @@
 <?php
 
-Actions::on("init", function() {
-    //echo "BasicLogger initialized\n";
-});
-
 Actions::on("menu", function() {
     AppMenu::add_to_menu(
         Actions::current_driver(),
