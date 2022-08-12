@@ -74,6 +74,7 @@ class ModuleLoader {
         $this->modconf = $modconf;
         $this->resolve_drivers();
         $this->add_module_actions();
+        Actions::trigger("init");
     }
 
     public function __destruct() {
