@@ -22,12 +22,9 @@ $safe_mode = [
     "Core"          => "TestCore",
     "AppMenu"       => "TestAppMenu",
     "Logging"       => "TestLogger",
-    "FileData"      => "TestFileData",
-    "SQL"           => "SQLite",
 ];
 
 $loader = new ModuleLoader($safe_mode, __DIR__ . "/" . "../modules/");
-Actions::trigger("init");
 Router::render();
 
 /* TODO:
