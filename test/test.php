@@ -12,7 +12,7 @@ register_shutdown_function(function() {
     }
 });
 
-require_once __DIR__ . "/" . "../lib/ModuleLoader.php";
+require_once __DIR__ . "/" . "../main.php";
 
 $safe_mode = [
     "AutoRouter"    => "AutoRouter",
@@ -26,7 +26,7 @@ $safe_mode = [
     "SQL"           => "SQLite",
 ];
 
-$loader = new ModuleLoader($safe_mode, __DIR__ . "/modules");
+$loader = new ModuleLoader($safe_mode, __DIR__ . "/" . "../modules/");
 Actions::trigger("init");
 Router::render();
 

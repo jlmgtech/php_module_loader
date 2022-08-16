@@ -1,2 +1,11 @@
 *.log
 *.env
+
+modules/*
+!modules/AppMenu/
+!modules/Auth/
+!modules/AutoRouter/
+!modules/Core/
+!modules/Logging/
+!modules/Router/
+!modules/Utils/

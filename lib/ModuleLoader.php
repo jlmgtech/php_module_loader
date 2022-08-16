@@ -67,9 +67,6 @@ class ModuleLoader {
     public function __construct(array $modconf, string $modules_dir) {
         module_log("", GREEN . "\n======REQUEST started======");
         spl_autoload_register([$this, "load_module"]);
-        if (!is_dir($modules_dir)) {
-            throw new Exception("Modules directory '$modules_dir' is not a directory");
-        }
         $this->modules_dir = $modules_dir;
         $this->modconf = $modconf;
         $this->resolve_drivers();
@@ -167,6 +164,7 @@ class ModuleLoader {
         return NULL;
     }
 
+    /// we want to return NULL if the driver is not found so other autoloaders can work after this one fails
     public function load_module($module) {
 
         if (!in_array($module, $this->get_enabled_modules())) {
@@ -208,8 +206,9 @@ class ModuleLoader {
     }
 
     private function get_module_dir(string $module) {
-        $module_dir = sprintf("%s/%s", $this->modules_dir, $module);
-        return is_dir($module_dir) ? $module_dir : NULL;
+        // since the driver directory will be checked to exist, we don't need
+        // to check the module dir.
+        return sprintf("%s/%s", $this->modules_dir, $module);
     }
 
     private function get_driver_dir(string $module, string $driver) {
