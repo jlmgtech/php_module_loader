@@ -10,10 +10,10 @@ Actions::on("menu", function() {
 
 Actions::on("routes", function() {
     Router::get("/", function() {
-        echo AppMenu::render();
+        include __DIR__ . "/" . "views/index.php";
     });
     AutoRouter::set("index", "/", function() {
-        echo AppMenu::render();
+        include __DIR__ . "/" . "views/index.php";
     });
 });
 
