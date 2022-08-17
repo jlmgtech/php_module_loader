@@ -15,13 +15,12 @@ register_shutdown_function(function() {
 require_once __DIR__ . "/" . "../main.php";
 
 $safe_mode = [
-    "AutoRouter"    => "AutoRouter",
     "Auth"          => "TestAuth",
-    "Router"        => "TestRouter",
+    "AutoRouter"    => "AutoRouter",
+    "Router"        => "Router",
     "Utils"         => "Utils",
-    "Core"          => "TestCore",
-    "AppMenu"       => "TestAppMenu",
-    "Logging"       => "TestLogger",
+    "AppMenu"       => "AppMenu",
+    "Logger"        => "ConsoleLogger",
 ];
 
 $loader = new ModuleLoader($safe_mode, __DIR__ . "/" . "../modules/");

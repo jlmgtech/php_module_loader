@@ -1,16 +1,19 @@
 <?php
 
-Actions::on("init", function() { });
-
 Actions::on("menu", function() {
     AppMenu::add_to_menu(
         Actions::current_driver(),
         AutoRouter::get(Actions::current_module(), "index"),
-        "dot-circle"
+        "object-ungroup"
     );
 });
 
 Actions::on("routes", function() {
-    Router::get("/", "Auth::login_guard", "Core::render");
-    AutoRouter::set("index", "/", "Auth::login_guard", "Core::render");
+    Router::get("/", function() {
+        echo AppMenu::render();
+    });
+    AutoRouter::set("index", "/", function() {
+        echo AppMenu::render();
+    });
 });
+

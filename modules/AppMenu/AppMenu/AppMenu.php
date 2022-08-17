@@ -1,6 +1,6 @@
 <?php
 
-class TestAppMenu {
+class AppMenu {
 
     private static $menu = [];
 
