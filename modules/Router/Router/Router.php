@@ -41,6 +41,14 @@ class Router {
         self::$get->set($path, $callback);
     }
 
+    public static function redirect(string $path) {
+        if ($path[0] !== "/") {
+            $path = "/" . $path;
+        }
+        header("Location: " . $path);
+        exit(0);
+    }
+
     public static function single(string $path, string $file) {
         // TODO:
         // should we allow middleware for these requests? for now, we'll just
