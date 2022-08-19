@@ -13,12 +13,21 @@ class Actions {
     private static $_current_action_params = [];
 
     public static function current_action(): string {
+        if (self::$_current_action === "") {
+            self::trigger("not_in_action_err", "action");
+        }
         return self::$_current_action;
     }
     public static function current_driver(): string {
+        if (self::$_current_driver === "") {
+            self::trigger("not_in_action_err", "driver");
+        }
         return self::$_current_driver;
     }
     public static function current_module(): string {
+        if (self::$_current_module === "") {
+            self::trigger("not_in_action_err", "module");
+        }
         return self::$_current_module;
     }
     public static function current_action_params(): array {
@@ -50,8 +59,8 @@ class Actions {
     /// run all listeners for a given hook
     public static function trigger(string $name, ...$args)
     {
-        //$old_action = self::$_current_action;
-        //$old_action_params = self::$_current_action_params;
+        $old_action = self::$_current_action;
+        $old_action_params = self::$_current_action_params;
 
         self::$_current_action = $name;
         self::$_current_action_params = $args;
@@ -60,8 +69,8 @@ class Actions {
         if (isset(self::$_actions[$name])) {
             foreach (self::$_actions[$name]->all() as $listener) {
 
-                //$old_driver = self::$_current_driver;
-                //$old_module = self::$_current_module;
+                $old_driver = self::$_current_driver;
+                $old_module = self::$_current_module;
 
                 self::$_current_module = $listener->module;
                 self::$_current_driver = $listener->driver;
@@ -72,14 +81,14 @@ class Actions {
                     $output .= $str;
                 }
 
-                //self::$_current_driver = $old_driver;
-                //self::$_current_module = $old_module;
+                self::$_current_driver = $old_driver;
+                self::$_current_module = $old_module;
 
             }
         }
 
-        //self::$_current_action = $old_action;
-        //self::$_current_action_params = $old_action_params;
+        self::$_current_action = $old_action;
+        self::$_current_action_params = $old_action_params;
 
         return $output;
     }
