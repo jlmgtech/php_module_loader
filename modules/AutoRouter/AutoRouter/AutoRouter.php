@@ -12,8 +12,7 @@ class AutoRouter {
 
     /// redirects you to the specified module page
     public static function go(string $module, string $page): void {
-        header("Location: " . self::get($module, $page));
-        exit();
+        Router::redirect(self::get($module, $page));
     }
 
     /// sets the link to the page for the given module to the subroute

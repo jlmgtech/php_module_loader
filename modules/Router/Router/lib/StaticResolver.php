@@ -17,8 +17,10 @@ class StaticResolver extends RouterResolver {
         $path = Utils::clean_path($path);
         foreach ($this->routes as $pattern => $route) {
             $dir = $route->get_payload();
-
-            if (strpos($path, $pattern) === 0) {
+            // strpos can't handle empty strings, hence the extra checks...
+            if ($pattern === "" && $path !== "")
+                continue;
+            if ($path === $pattern || strpos($path, $pattern) === 0) {
                 $file = $dir . "/" . substr($path, strlen($pattern));
                 if (file_exists($file) && is_file($file)) {
                     $this->set_current($route);

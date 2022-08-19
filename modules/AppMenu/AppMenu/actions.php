@@ -9,8 +9,8 @@ Actions::on("menu", function() {
 });
 
 Actions::on("routes", function() {
-    Router::get("/", function() {
-        include __DIR__ . "/" . "views/index.php";
+    Router::get("/admin", function() {
+        AutoRouter::go(Actions::current_module(), "index");
     });
     AutoRouter::set("index", "/", function() {
         include __DIR__ . "/" . "views/index.php";
