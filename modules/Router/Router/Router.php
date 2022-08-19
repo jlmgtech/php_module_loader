@@ -172,7 +172,7 @@ class Router {
 
         Actions::trigger("routes");
 
-        $path = $_SERVER["REQUEST_URI"];
+        $path = strtok($_SERVER["REQUEST_URI"], "?#");
         $method = $_SERVER["REQUEST_METHOD"];
 
         if ($method === "GET") {
