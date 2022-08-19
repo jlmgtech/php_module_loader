@@ -38,9 +38,10 @@ class TestAuth {
     }
 
     public static function render_login(): string {
+        $login_link = AutoRouter::get("Auth", "login");
         return "
             <style>".file_get_contents(__DIR__."/styles.css")."</style>
-            <form action='/login' method='post'>
+            <form action='$login_link' method='post'>
                 <input type='text' name='user' placeholder='Username' />
                 <input type='password' name='pass' placeholder='Password' />
                 <input type='submit' value='Login' />
