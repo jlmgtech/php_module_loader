@@ -29,7 +29,7 @@ class AutoRouter {
     }
 
     /// sets the link to the page for the given module to the subroute
-    public static function set(string $page, string $subroute, ...$fns): void {
+    public static function set(string $page, ...$fns): void {
         $module = Actions::current_module(); // returns "" if not in an action
         $driver = Actions::current_driver();
         if ($module === "")
@@ -38,7 +38,7 @@ class AutoRouter {
         $modslug = Utils::to_slug($module);
         $drvslug = Utils::to_slug($driver);
         $pgeslug = Utils::to_slug($page);
-        $path = sprintf("%s/%s/%s/%s", $modslug, $drvslug, $pgeslug, Utils::clean_path($subroute));
+        $path = sprintf("%s/%s/%s", $modslug, $drvslug, $pgeslug);
         self::$modules[$module] = self::$modules[$module] ?? [];
         self::$modules[$module][$page] = $path;
         Router::get($path, ...$fns);

@@ -5,7 +5,7 @@ Actions::on("menu", function() {
 });
 
 Actions::on("routes", function() {
-    AutoRouter::set("index", "/", "Auth::login_guard", function() {
+    AutoRouter::set("index", "Auth::login_guard", function() {
         include __DIR__ . "/" . "views/index.php";
     });
     Router::get("/admin", function() {

@@ -5,16 +5,16 @@ Actions::on("menu", function() {
 });
 
 Actions::on("routes", function() {
-    AutoRouter::set("index", "", function() {
+    AutoRouter::set("index", function() {
         echo Auth::get_cp();
     });
-    AutoRouter::set("login", "", function() {
+    AutoRouter::set("login", function() {
         echo Auth::get_login();
     });
-    AutoRouter::set("logout", "", function() {
+    AutoRouter::set("logout", function() {
         echo Auth::get_logout();
     });
-    AutoRouter::set("session", "", "Auth::login_guard", function() {
+    AutoRouter::set("session", "Auth::login_guard", function() {
         echo Auth::get_cp();
     });
 
