@@ -3,10 +3,23 @@
 class AutoRouter {
 
     private static $modules = [];
+    private static $path_prefix = ""; // prefix all paths with this
 
     /// returns link to the page for the given module
     public static function get(string $module, string $page): string {
-        $path = self::$modules[$module][$page];
+        $pages = self::$modules[$module] ?? NULL;
+        if ($pages === NULL) {
+            module_log("WARN", "AutoRouter: Cannot find \"$page\", no pages defined yet for module '$module'");
+            module_log("WARN", "AutoRouter: define pages in the 'routes' action");
+            throw new Exception("No pages defined for module '$module'");
+        }
+
+        $path = $pages[$page] ?? NULL;
+        if ($path === NULL) {
+            module_log("WARN", "AutoRouter: No page found for $module/$page");
+            throw new Exception("No page found for $module/$page");
+        }
+
         return "/" . $path;
     }
 
