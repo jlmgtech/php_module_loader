@@ -1,7 +1,7 @@
 <?php
 
-Actions::on("route", function() {
+Actions::on("routes", function() {
     Router::get("/", function() {
-        return "Hello World!";
+        echo "Hello World!";
     });
 });
